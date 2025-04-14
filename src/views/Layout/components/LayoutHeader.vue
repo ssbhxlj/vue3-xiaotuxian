@@ -3,8 +3,6 @@ import { useCategoryStore } from '@/stores/category';
 
 const categoryStore = useCategoryStore();
 
-
-
 </script>
 
 <template>
