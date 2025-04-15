@@ -2,10 +2,15 @@ import httpInstance from "@/utils/http"
 
 //获取banner接口
 
-export function getBannerAPI(){
+export function getBannerAPI(params={}){
+  //广告（banner）区域展示位置，1为首页，2为分类页，默认为1
+  const { distributionSite = '1' } = params
   return httpInstance({
     url:'/home/banner',
-    //这个method是copilot自动补全的
+    params:{
+      distributionSite
+    }
+    //这个method是copilot自动补全的，不知为何，有时加了会报错
     // method:'get'
   })
 }
