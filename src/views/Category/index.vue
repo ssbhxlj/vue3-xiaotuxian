@@ -4,14 +4,17 @@ import { getBannerAPI } from '@/apis/home';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import GoodsItem from '@/views/Home/components/GoodsItem.vue'
+import { onBeforeRouteUpdate } from 'vue-router';
 
 //获取数据
 const categoryData = ref({});//后端传的就是对象
 
 const route = useRoute();
 
-const getCategory = async () => {
-  const res = await getCategoryAPI(route.params.id);
+//为了使getCategory(to.params.id)能够工作，需要传参id，默认为初始值route.params.id
+const getCategory = async (id=route.params.id) => {
+  // const res = await getCategoryAPI(route.params.id);
+  const res = await getCategoryAPI(id);
   categoryData.value = res.result;
   console.log(res.result);
 };
@@ -19,6 +22,14 @@ const getCategory = async () => {
 onMounted(() => {
   getCategory();
 });
+
+//目标：路由参数变化的时候，可以吧分类数据接口重新发送
+onBeforeRouteUpdate((to)=>{
+  // console.log('路由参数变化了');
+  //to是新的路由对象,to.params.id是新的路由参数
+  console.log(to);
+  getCategory(to.params.id);
+})
 
 //获取banner，直接复制HomeBanner.vue里面的代码
 const bannerList = ref([])
