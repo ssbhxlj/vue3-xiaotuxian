@@ -23,6 +23,9 @@ app.use(createPinia())
 app.use(router)
 //使用懒加载插件
 app.use(lazyPlugin)
+//引入全局化注册的组件
+import { componentPlugin } from './components'
+app.use(componentPlugin)
 
 app.mount('#app')
 
