@@ -71,6 +71,7 @@ const load = async () => {
       </el-breadcrumb>
     </div>
     <div class="sub-container">
+      <!-- 激活哪个el-tab-pane，激活的那项的name给v-model后面的属性 -->
       <el-tabs v-model="reqData.sortField" @tab-change="tabChange">
         <el-tab-pane label="最新商品" name="publishTime"></el-tab-pane>
         <el-tab-pane label="最高人气" name="orderNum"></el-tab-pane>
