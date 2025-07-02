@@ -20,6 +20,7 @@
           <li><a href="javascript:;">会员中心</a></li>
         </template>
         <template v-else>
+          <!-- 这里的编程式路由导航是vue2写法，适合直接写在模板里 -->
           <li><a href="javascript:;" @click="$router.push('/login')">请先登录</a></li>
           <li><a href="javascript:;">帮助中心</a></li>
           <li><a href="javascript:;">关于我们</a></li>
