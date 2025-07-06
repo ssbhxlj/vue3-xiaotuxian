@@ -28,6 +28,22 @@ const rules = {
     },
   ],
 };
+
+// 3. 获取form实例统一校验
+const formRef = ref(null);
+const doLogin = () => {
+  formRef.value.validate((valid) => {
+    //valid在所有条件通过时为true
+    if (valid) {
+      // 模拟登录成功
+      console.log("登录成功", form.value);
+      // TODO:可以在这里进行路由跳转或其他操作
+    } else {
+      console.log("登录失败");
+      return false;
+    }
+  });
+};
 </script>
 
 
@@ -53,6 +69,7 @@ const rules = {
         <div class="account-box">
           <div class="form">
             <el-form
+              ref="formRef"
               :model="form"
               :rules="rules"
               label-position="right"
@@ -71,7 +88,7 @@ const rules = {
                   我已同意隐私条款和服务条款
                 </el-checkbox>
               </el-form-item>
-              <el-button size="large" class="subBtn">点击登录</el-button>
+              <el-button size="large" class="subBtn" @click="doLogin">点击登录</el-button>
             </el-form>
           </div>
         </div>
