@@ -1,5 +1,10 @@
 <script setup>
+import { loginAPI } from "@/apis/user";
 import { ref } from "vue";
+
+import { ElMessage } from "element-plus";
+import "element-plus/theme-chalk/el-message.css";
+import { useRouter } from "vue-router";
 
 // 表单校验
 // 1. 准备表单对象
@@ -31,16 +36,25 @@ const rules = {
 
 // 3. 获取form实例统一校验
 const formRef = ref(null);
+const router = useRouter();
 const doLogin = () => {
-  formRef.value.validate((valid) => {
+  const { account, password } = form.value;
+  formRef.value.validate(async (valid) => {
     //valid在所有条件通过时为true
     if (valid) {
-      // 模拟登录成功
-      console.log("登录成功", form.value);
-      // TODO:可以在这里进行路由跳转或其他操作
+      const res = await loginAPI({ account, password });
+      // console.log(res);
+      // 1.提示用户
+      ElMessage({
+        type: "success",
+        message: res.msg,
+      });
+      // 2.跳转到首页
+      router.replace({path: "/"});
+
     } else {
-      console.log("登录失败");
-      return false;
+      // console.log("登录失败");
+      // 失败的操作放在拦截器里面统一控制
     }
   });
 };
@@ -88,7 +102,9 @@ const doLogin = () => {
                   我已同意隐私条款和服务条款
                 </el-checkbox>
               </el-form-item>
-              <el-button size="large" class="subBtn" @click="doLogin">点击登录</el-button>
+              <el-button size="large" class="subBtn" @click="doLogin"
+                >点击登录</el-button
+              >
             </el-form>
           </div>
         </div>

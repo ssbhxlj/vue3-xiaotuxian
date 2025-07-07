@@ -34,6 +34,9 @@
 //直接从笔记中复制过来
 import axios from 'axios'
 
+import { ElMessage } from "element-plus";
+import "element-plus/theme-chalk/el-message.css";
+
 // 创建axios实例
 //弹幕说文档是错的
 const httpInstance = axios.create({
@@ -48,6 +51,11 @@ httpInstance.interceptors.request.use(config => {
 
 // axios响应式拦截器
 httpInstance.interceptors.response.use(res => res.data, e => {
+  // 统一错误提示
+  ElMessage({
+    type: 'error',
+    message: e.response.data.message
+  })
   return Promise.reject(e)
 })
 
