@@ -1,5 +1,5 @@
 <script setup>
-import { loginAPI } from "@/apis/user";
+// import { loginAPI } from "@/apis/user";
 import { ref } from "vue";
 
 import { ElMessage } from "element-plus";
@@ -10,7 +10,7 @@ import { useUserStore } from "@/stores/user";
 const userStore = useUserStore();
 
 // 表单校验
-// 1. 准备表单对象
+// 1. 准备表单对象，这里直接写，懒得输入了
 const form = ref({
   account: "12056258282",
   password: "hm#qd@23!",

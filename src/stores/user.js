@@ -12,8 +12,16 @@ export const useUserStore = defineStore(
       const res = await loginAPI({ account, password });
       userInfo.value = res.result;
     };
+
+    // 定义退出登录的action
+    const logout = () => {
+      userInfo.value = {}; // 清空用户信息
+      // pinia的持久化插件会自动清除存储的用户信息,如果不用插件
+      // localStorage.removeItem('user'); // 清除pinia的持久化存储
+    };
+
     // 3. 以对象的形式返回state和action
-    return { userInfo, getUserInfo };
+    return { userInfo, getUserInfo, logout };
   },
   {
     persist: true, // 使用pinia-plugin-persistedstate插件进行持久化存储

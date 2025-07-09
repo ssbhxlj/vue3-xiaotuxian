@@ -37,6 +37,8 @@ import axios from 'axios'
 import { ElMessage } from "element-plus";
 import "element-plus/theme-chalk/el-message.css";
 import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router';
+import router from '@/router';
 
 // 创建axios实例
 //弹幕说文档是错的
@@ -64,6 +66,16 @@ httpInstance.interceptors.response.use(res => res.data, e => {
     type: 'error',
     message: e.response.data.message
   })
+  // 401token失效处理，目前后端只在详情页检查token，进了详情页才会触发
+  if (e.response.status === 401) {
+    const userStore = useUserStore()
+    userStore.logout() // 清除用户信息
+    // 跳转到登录页面
+    // useRouter()只支持在setup函数中使用，这里直接用router实例
+    // const router = useRouter()
+    // router.push('/login')
+    router.push('/login')
+  }
   return Promise.reject(e)
 })
 
