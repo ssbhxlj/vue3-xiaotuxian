@@ -6,15 +6,15 @@ import { ElMessage } from "element-plus";
 import "element-plus/theme-chalk/el-message.css";
 import { useRouter } from "vue-router";
 
-import { userStore, useUserStore } from "@/stores/user";
+import { useUserStore } from "@/stores/user";
 const userStore = useUserStore();
 
 // 表单校验
 // 1. 准备表单对象
 const form = ref({
-  account: "",
-  password: "",
-  agree: false,
+  account: "12056258282",
+  password: "hm#qd@23!",
+  agree: true,
 });
 
 // 2. 准备表单校验规则
@@ -50,7 +50,8 @@ const doLogin = () => {
       // 1.提示用户
       ElMessage({
         type: "success",
-        message: res.msg,
+        // message: res.msg,
+        message: '登录成功',
       });
       // 2.跳转到首页
       router.replace({path: "/"});
