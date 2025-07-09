@@ -36,6 +36,7 @@ import axios from 'axios'
 
 import { ElMessage } from "element-plus";
 import "element-plus/theme-chalk/el-message.css";
+import { useUserStore } from '@/stores/user'
 
 // 创建axios实例
 //弹幕说文档是错的
@@ -46,6 +47,13 @@ const httpInstance = axios.create({
 
 // axios请求拦截器
 httpInstance.interceptors.request.use(config => {
+  // 1. 从pinia中获取token
+  const userStore = useUserStore()
+  const token = userStore.userInfo.token
+  // 2. 如果有token，则携带token
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
   return config
 }, e => Promise.reject(e))
 
