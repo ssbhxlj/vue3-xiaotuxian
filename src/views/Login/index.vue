@@ -6,6 +6,9 @@ import { ElMessage } from "element-plus";
 import "element-plus/theme-chalk/el-message.css";
 import { useRouter } from "vue-router";
 
+import { userStore, useUserStore } from "@/stores/user";
+const userStore = useUserStore();
+
 // 表单校验
 // 1. 准备表单对象
 const form = ref({
@@ -42,8 +45,8 @@ const doLogin = () => {
   formRef.value.validate(async (valid) => {
     //valid在所有条件通过时为true
     if (valid) {
-      const res = await loginAPI({ account, password });
-      // console.log(res);
+      // const res = await loginAPI({ account, password });
+      await userStore.getUserInfo({ account, password });
       // 1.提示用户
       ElMessage({
         type: "success",
