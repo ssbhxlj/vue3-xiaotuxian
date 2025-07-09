@@ -9,6 +9,8 @@ import router from './router'
 //引入初始化样式文件
 import './styles/common.scss'
 
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+
 // // //测试接口函数
 // import { getCategory } from './apis/testAPI'
 // getCategory().then(res => {
@@ -19,7 +21,10 @@ import { lazyPlugin } from './directives'
 
 const app = createApp(App)
 
-app.use(createPinia())
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate) //使用持久化插件
+app.use(pinia)
+// app.use(createPinia())
 app.use(router)
 //使用懒加载插件
 app.use(lazyPlugin)
