@@ -1,8 +1,10 @@
 <script setup>
-import { getDetail } from '@/apis/detail';
-import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import DetailHot from './components/DetailHot.vue';
+import { getDetail } from "@/apis/detail";
+import { onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
+import DetailHot from "./components/DetailHot.vue";
+import { ElMessage } from "element-plus";
+import { useCartStore } from "@/stores/cartStore";
 // import ImageView from '@/components/ImageView/index.vue';
 // import XtxSku from '@/components/XtxSku/index.vue';
 
@@ -12,17 +14,44 @@ const getGoods = async () => {
   const res = await getDetail(route.params.id);
   goods.value = res.result;
 };
+const cartStore = useCartStore();
+
 onMounted(() => {
   getGoods();
 });
 
 //sku规格被操作时skuChange函数的实现
+let skuObj = {};
 const skuChange = (sku) => {
   console.log(sku);
+  skuObj = sku;
+};
 
+// 数量变化时的处理函数
+const count = ref(1);
+const handleCountChange = (newCount) => {
+  count.value = newCount;
+};
+
+// 添加到购物车的处理函数
+const addToCart = () => {
+  if(skuObj.skuId){
+    // 触发action
+    cartStore.addCart({
+      id: goods.value.id,
+      name: goods.value.name,
+      picture: goods.value.mainPictures[0],
+      price: goods.value.price,
+      count: count.value,
+      skuId: skuObj.skuId,
+      attrsText: skuObj.attrsText,
+      selected: true,
+    });
+  }else{
+    // 如果没有选择sku，提示用户
+    ElMessage.warning("请先选择商品规格");
+  }
 }
-
-
 </script>
 
 <template>
@@ -39,10 +68,14 @@ const skuChange = (sku) => {
           2. v-if手动控制，保证只有数据存在才渲染
             -->
           <!-- 一级分类 -->
-          <el-breadcrumb-item :to="{ path: `/category/${goods.categories?.[1].id}` }">{{ goods.categories?.[1].name }}
+          <el-breadcrumb-item
+            :to="{ path: `/category/${goods.categories?.[1].id}` }"
+            >{{ goods.categories?.[1].name }}
           </el-breadcrumb-item>
           <!-- 二级分类 -->
-          <el-breadcrumb-item :to="{ path: `category/sub/${goods.categories?.[0].id}` }">{{ goods.categories?.[0].name }}
+          <el-breadcrumb-item
+            :to="{ path: `category/sub/${goods.categories?.[0].id}` }"
+            >{{ goods.categories?.[0].name }}
           </el-breadcrumb-item>
           <el-breadcrumb-item>抓绒保暖，毛毛虫子儿童运动鞋</el-breadcrumb-item>
         </el-breadcrumb>
@@ -53,13 +86,13 @@ const skuChange = (sku) => {
           <div class="goods-info">
             <div class="media">
               <!-- 图片预览区 -->
-              <ImageView :image-list="goods.mainPictures"/>
+              <ImageView :image-list="goods.mainPictures" />
 
               <!-- 统计数量 -->
               <ul class="goods-sales">
                 <li>
                   <p>销量人气</p>
-                  <p> {{ goods.salesCount }} </p>
+                  <p>{{ goods.salesCount }}</p>
                   <p><i class="iconfont icon-task-filling"></i>销量人气</p>
                 </li>
                 <li>
@@ -82,8 +115,8 @@ const skuChange = (sku) => {
             </div>
             <div class="spec">
               <!-- 商品信息区 -->
-              <p class="g-name"> {{ goods.name }} </p>
-              <p class="g-desc">{{ goods.des }} </p>
+              <p class="g-name">{{ goods.name }}</p>
+              <p class="g-desc">{{ goods.des }}</p>
               <p class="g-price">
                 <span>{{ goods.price }}</span>
                 <span> {{ goods.oldPrice }}</span>
@@ -104,17 +137,15 @@ const skuChange = (sku) => {
                 </dl>
               </div>
               <!-- sku组件 -->
-              <XtxSku :goods="goods" @change="skuChange"/>
+              <XtxSku :goods="goods" @change="skuChange" />
 
               <!-- 数据组件 -->
+              <el-input-number v-model="count" :min="1" @change="handleCountChange" />
 
               <!-- 按钮组件 -->
               <div>
-                <el-button size="large" class="btn">
-                  加入购物车
-                </el-button>
+                <el-button size="large" class="btn" @click="addToCart"> 加入购物车 </el-button>
               </div>
-
             </div>
           </div>
           <div class="goods-footer">
@@ -128,14 +159,21 @@ const skuChange = (sku) => {
                 <div class="goods-detail" v-if="goods.details">
                   <!-- 属性 -->
                   <ul class="attrs">
-                    <li v-for="item in goods.details.properties" :key="item.value">
+                    <li
+                      v-for="item in goods.details.properties"
+                      :key="item.value"
+                    >
                       <span class="dt">{{ item.name }}</span>
                       <span class="dd">{{ item.value }}</span>
                     </li>
                   </ul>
                   <!-- 图片 -->
-                  <img v-for="img in goods.details.pictures" :src="img" :key="img" alt="" />
-
+                  <img
+                    v-for="img in goods.details.pictures"
+                    :src="img"
+                    :key="img"
+                    alt=""
+                  />
                 </div>
               </div>
             </div>
@@ -291,7 +329,7 @@ const skuChange = (sku) => {
       flex: 1;
       position: relative;
 
-      ~li::after {
+      ~ li::after {
         position: absolute;
         top: 10px;
         left: 0;
@@ -345,7 +383,7 @@ const skuChange = (sku) => {
       font-size: 18px;
       position: relative;
 
-      >span {
+      > span {
         color: $priceColor;
         font-size: 16px;
         margin-left: 10px;
@@ -379,14 +417,13 @@ const skuChange = (sku) => {
     }
   }
 
-  >img {
+  > img {
     width: 100%;
   }
 }
 
 .btn {
   margin-top: 20px;
-
 }
 
 .bread-container {
