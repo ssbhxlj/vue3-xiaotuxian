@@ -64,7 +64,7 @@ httpInstance.interceptors.response.use(res => res.data, e => {
   // 统一错误提示
   ElMessage({
     type: 'error',
-    message: e.response.data.message
+    message: e.response?.data?.message || e.message || '请求失败'
   })
   // 401token失效处理，目前后端只在详情页检查token，进了详情页才会触发
   if (e.response.status === 401) {
