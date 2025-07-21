@@ -34,12 +34,22 @@ export const useCartStore = defineStore('cart', ()=>{
   const totalCount = computed(()=> cartList.value.reduce((total, item) => total + item.count, 0));
   // 2. 总价
   const totalPrice = computed(()=> cartList.value.reduce((total, item) => total + item.count * item.price, 0));
+
+  // 单选功能
+  const singleCheck = (skuId, selected) => {
+    const item = cartList.value.find(cartItem => cartItem.skuId === skuId);
+    if (item) {
+      item.selected = selected; // 更新选中状态
+    }
+  };
+
   return {
     cartList,
     addCart,
     delCart,
     totalCount,
-    totalPrice
+    totalPrice,
+    singleCheck
   }
 }, {
   persist: true // 持久化存储
