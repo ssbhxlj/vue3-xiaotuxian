@@ -43,13 +43,25 @@ export const useCartStore = defineStore('cart', ()=>{
     }
   };
 
+  // 全选
+  const isAllSelected = computed(() => {
+    return cartList.value.length > 0 && cartList.value.every(item => item.selected);
+  });
+  const toggleAllSelection = (selected) => {
+    cartList.value.forEach(item => {
+      item.selected = selected; // 更新每个商品的选中状态
+    });
+  };
+
   return {
     cartList,
     addCart,
     delCart,
     totalCount,
     totalPrice,
-    singleCheck
+    singleCheck,
+    isAllSelected,
+    toggleAllSelection
   }
 }, {
   persist: true // 持久化存储

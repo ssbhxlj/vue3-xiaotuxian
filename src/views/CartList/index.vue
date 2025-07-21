@@ -1,12 +1,23 @@
 <script setup>
 import { useCartStore } from "@/stores/cartStore";
+import { storeToRefs } from "pinia";
 
-// const cartStore = useCartStore();
-const { cartList, delCart, totalCount, totalPrice, singleCheck: storeSingleCheck } = useCartStore();
+const cartStore = useCartStore();
+const {
+  cartList,
+  delCart,
+  totalCount,
+  totalPrice,
+  singleCheck: storeSingleCheck,
+  toggleAllSelection
+} = useCartStore();
+// 直接解构赋值会失去响应式
+const {isAllSelected} = storeToRefs(cartStore)
+
 
 // 单选
 const singleCheck = (i, selected) => {
-  console.log("单选", i, selected);
+  // console.log("单选", i, selected);
   storeSingleCheck(i.skuId, selected);
 };
 </script>
@@ -19,7 +30,8 @@ const singleCheck = (i, selected) => {
           <thead>
             <tr>
               <th width="120">
-                <el-checkbox />
+                <!-- 这里直接用store的action了，没有另外封装 -->
+                <el-checkbox :model-value="isAllSelected" @change="toggleAllSelection"/>
               </th>
               <th width="400">商品信息</th>
               <th width="220">单价</th>
@@ -33,7 +45,10 @@ const singleCheck = (i, selected) => {
             <tr v-for="i in cartList" :key="i.id">
               <td>
                 <!-- @change的selected是默认要传的参数 -->
-                <el-checkbox :model-value="i.selected" @change="(selected)=>singleCheck(i, selected)" />
+                <el-checkbox
+                  :model-value="i.selected"
+                  @change="(selected) => singleCheck(i, selected)"
+                />
               </td>
               <td>
                 <div class="goods">
