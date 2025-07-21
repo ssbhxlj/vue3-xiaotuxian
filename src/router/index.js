@@ -8,6 +8,7 @@ import Category from '../views/Category/index.vue'
 import SubCategory from '../views/SubCategory/index.vue'
 import Detail from '../views/Detail/index.vue'
 import Checkout from '../views/Checkout/index.vue'
+import CartList from '../views/CartList/index.vue'
 
 
 
@@ -38,6 +39,10 @@ const router = createRouter({
         {
           path: 'checkout',
           component: Checkout
+        },
+        {
+          path: 'cart',
+          component: CartList
         }
       ]
     },

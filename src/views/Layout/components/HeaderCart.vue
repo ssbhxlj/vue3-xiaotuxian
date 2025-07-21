@@ -1,5 +1,6 @@
 <script setup>
 import { useCartStore } from '@/stores/cartStore';
+import { useRouter } from 'vue-router';
 
 const cartStore = useCartStore();
 
@@ -35,9 +36,10 @@ const cartStore = useCartStore();
       <div class="foot">
         <div class="total">
           <p>共 {{ cartStore.totalCount }} 件商品</p>
-          <p>&yen; {{ cartStore.totalPrice }} </p>
+          <p>&yen; {{ cartStore.totalPrice.toFixed(2) }} </p>
         </div>
-        <el-button size="large" type="primary" >去购物车结算</el-button>
+        <!-- 这里直接用vue2的$router -->
+        <el-button size="large" type="primary" @click="$router.push('/cart')">去购物车结算</el-button>
       </div>
     </div>
 </div>

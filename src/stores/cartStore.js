@@ -33,7 +33,7 @@ export const useCartStore = defineStore('cart', ()=>{
   // 1. 总数
   const totalCount = computed(()=> cartList.value.reduce((total, item) => total + item.count, 0));
   // 2. 总价
-  const totalPrice = computed(()=> cartList.value.reduce((total, item) => total + item.count * item.price, 0).toFixed(2));
+  const totalPrice = computed(()=> cartList.value.reduce((total, item) => total + item.count * item.price, 0));
   return {
     cartList,
     addCart,
