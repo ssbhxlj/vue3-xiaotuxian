@@ -4,16 +4,16 @@ import { storeToRefs } from "pinia";
 
 const cartStore = useCartStore();
 const {
-  cartList,
+  // cartList,
   delCart,
-  totalCount,
-  totalPrice,
+  // totalCount,
+  // totalPrice,
   singleCheck: storeSingleCheck,
-  toggleAllSelection
+  toggleAllSelection,
 } = useCartStore();
 // 直接解构赋值会失去响应式
-const {isAllSelected} = storeToRefs(cartStore)
-
+const { cartList, totalCount, totalPrice, isAllSelected, selectedCount, selectedPrice } =
+  storeToRefs(cartStore);
 
 // 单选
 const singleCheck = (i, selected) => {
@@ -31,7 +31,7 @@ const singleCheck = (i, selected) => {
             <tr>
               <th width="120">
                 <!-- 这里直接用store的action了，没有另外封装 -->
-                <el-checkbox :model-value="isAllSelected" @change="toggleAllSelection"/>
+                <el-checkbox :model-value="isAllSelected" @change="toggleAllSelection" />
               </th>
               <th width="400">商品信息</th>
               <th width="220">单价</th>
@@ -64,7 +64,7 @@ const singleCheck = (i, selected) => {
                 <p>&yen;{{ i.price }}</p>
               </td>
               <td class="tc">
-                <el-input-number v-model="i.count" />
+                <el-input-number v-model="i.count" :min="1"/>
               </td>
               <td class="tc">
                 <p class="f16 red">&yen;{{ (i.price * i.count).toFixed(2) }}</p>
@@ -99,8 +99,8 @@ const singleCheck = (i, selected) => {
       <!-- 操作栏 -->
       <div class="action">
         <div class="batch">
-          共 {{ totalCount }} 件商品，已选择 2 件，商品合计 ：
-          <span class="red">¥ {{ totalPrice.toFixed(2) }} </span>
+          共 {{ totalCount }} 件商品，已选择 {{ selectedCount }} 件，商品合计 ：
+          <span class="red">¥ {{ selectedPrice.toFixed(2) }} </span>
         </div>
         <div class="total">
           <el-button size="large" type="primary">下单结算</el-button>
