@@ -21,3 +21,14 @@ export const getCartListAPI = ()=>{
     method: 'GET', // 默认的，这里路径一样区分一下
   })
 }
+
+// 删除购物车商品,ids是一个数组
+export const delCartAPI = (ids)=>{
+  return httpInstance({
+    url: '/member/cart',
+    method: 'DELETE',
+    data: {
+      ids
+    }
+  })
+}
