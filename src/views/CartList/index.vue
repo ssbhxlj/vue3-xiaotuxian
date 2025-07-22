@@ -12,7 +12,7 @@ const {
   toggleAllSelection,
 } = useCartStore();
 // 直接解构赋值会失去响应式
-const { cartList, totalCount, totalPrice, isAllSelected, selectedCount, selectedPrice } =
+const { cartList, totalCount, isAllSelected, selectedCount, selectedPrice } =
   storeToRefs(cartStore);
 
 // 单选
@@ -64,7 +64,7 @@ const singleCheck = (i, selected) => {
                 <p>&yen;{{ i.price }}</p>
               </td>
               <td class="tc">
-                <el-input-number v-model="i.count" :min="1"/>
+                <el-input-number v-model="i.count" :min="1" />
               </td>
               <td class="tc">
                 <p class="f16 red">&yen;{{ (i.price * i.count).toFixed(2) }}</p>

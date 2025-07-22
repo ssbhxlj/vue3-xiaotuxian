@@ -23,7 +23,7 @@ onMounted(() => {
 //sku规格被操作时skuChange函数的实现
 let skuObj = {};
 const skuChange = (sku) => {
-  console.log(sku);
+  // console.log(sku);
   skuObj = sku;
 };
 

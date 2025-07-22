@@ -26,7 +26,7 @@ export function useCategory() {
   onBeforeRouteUpdate((to) => {
     // console.log('路由参数变化了');
     //to是新的路由对象,to.params.id是新的路由参数
-    console.log(to);
+    // console.log(to);
     getCategory(to.params.id);
   })
 
