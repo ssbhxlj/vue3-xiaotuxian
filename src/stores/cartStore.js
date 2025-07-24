@@ -110,6 +110,7 @@ export const useCartStore = defineStore(
       addCart,
       delCart,
       clearCart,
+      updateCartList,
       totalCount,
       totalPrice,
       singleCheck,

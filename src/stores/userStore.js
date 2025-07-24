@@ -1,4 +1,5 @@
 // 管理用户数据
+import { mergeCartAPI } from "@/apis/cart";
 import { loginAPI } from "@/apis/user";
 import { defineStore } from "pinia";
 import { ref } from "vue";
@@ -6,12 +7,24 @@ import { useCartStore } from "./cartStore";
 export const useUserStore = defineStore(
   "user",
   () => {
+          const cartStore = useCartStore();
+
     // 1. 定义管理用户数据的state
     const userInfo = ref({});
     // 2. 定义获取用户数据的action
     const getUserInfo = async ({ account, password }) => {
       const res = await loginAPI({ account, password });
       userInfo.value = res.result;
+      // 合并购物车
+      await mergeCartAPI(cartStore.cartList.map(item=>{
+        return {
+          skuId: item.skuId,
+          selected: item.selected,
+          count: item.count
+        }
+      }))
+      // 更新购物车列表
+      cartStore.updateCartList();
     };
 
     // 定义退出登录的action
@@ -20,7 +33,6 @@ export const useUserStore = defineStore(
       // pinia的持久化插件会自动清除存储的用户信息。如果不用插件
       // localStorage.removeItem('user'); // 清除pinia的持久化存储
       // 执行清除购物车的action
-      const cartStore = useCartStore();
       cartStore.clearCart(); // 清除购物车
     };
 
