@@ -7,8 +7,7 @@ const curAddress = ref({}); // 默认地址对象
 const getCheckInfo = async () => {
   const res = await getCheckInfoAPI();
   checkInfo.value = res.result;
-  // 视频里isDefault为0的地址是默认地址，这里写1是因为只有一个isDefault为1的地址
-  curAddress.value = checkInfo.value.userAddresses.find((item) => item.isDefault === 1);
+  curAddress.value = checkInfo.value.userAddresses.find((item) => item.isDefault === 0);
 };
 
 onMounted(() => {

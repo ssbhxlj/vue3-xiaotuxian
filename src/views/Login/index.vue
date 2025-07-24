@@ -12,7 +12,7 @@ const userStore = useUserStore();
 // 表单校验
 // 1. 准备表单对象，这里直接写，懒得输入了
 const form = ref({
-  account: "12056258282",
+  account: "12056258293",
   password: "hm#qd@23!",
   agree: true,
 });
