@@ -55,6 +55,16 @@ export const useCartStore = defineStore(
       }
     };
 
+    // 清除购物车
+    const clearCart = () => {
+      cartList.value = []; // 清空购物车列表
+      // 如果需要清除服务器端的购物车，可以调用相应的API
+      if (isLogin.value) {
+        // 调用清除购物车的API
+        // clearCartAPI();
+      }
+    }
+
     // 计算属性
     // 1. 总数
     const totalCount = computed(() =>
@@ -99,6 +109,7 @@ export const useCartStore = defineStore(
       cartList,
       addCart,
       delCart,
+      clearCart,
       totalCount,
       totalPrice,
       singleCheck,

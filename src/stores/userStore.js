@@ -2,6 +2,7 @@
 import { loginAPI } from "@/apis/user";
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { useCartStore } from "./cartStore";
 export const useUserStore = defineStore(
   "user",
   () => {
@@ -16,8 +17,11 @@ export const useUserStore = defineStore(
     // 定义退出登录的action
     const logout = () => {
       userInfo.value = {}; // 清空用户信息
-      // pinia的持久化插件会自动清除存储的用户信息,如果不用插件
+      // pinia的持久化插件会自动清除存储的用户信息。如果不用插件
       // localStorage.removeItem('user'); // 清除pinia的持久化存储
+      // 执行清除购物车的action
+      const cartStore = useCartStore();
+      cartStore.clearCart(); // 清除购物车
     };
 
     // 3. 以对象的形式返回state和action
