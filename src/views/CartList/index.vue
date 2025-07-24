@@ -1,8 +1,11 @@
 <script setup>
 import { useCartStore } from "@/stores/cartStore";
+import { ElMessage } from "element-plus";
 import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
 
 const cartStore = useCartStore();
+const router = useRouter(); //必须写在setup最外层
 const {
   // cartList,
   delCart,
@@ -19,6 +22,15 @@ const { cartList, totalCount, isAllSelected, selectedCount, selectedPrice } =
 const singleCheck = (i, selected) => {
   // console.log("单选", i, selected);
   storeSingleCheck(i.skuId, selected);
+};
+// 跳转到结算页面
+const toCheckout = () => {
+  if (selectedCount.value === 0) {
+    ElMessage.warning("请至少选择一件商品");
+    return;
+  }
+  // 跳转到结算页面
+  router.push("/checkout");
 };
 </script>
 
@@ -103,7 +115,7 @@ const singleCheck = (i, selected) => {
           <span class="red">¥ {{ selectedPrice.toFixed(2) }} </span>
         </div>
         <div class="total">
-          <el-button size="large" type="primary">下单结算</el-button>
+          <el-button size="large" type="primary" @click="toCheckout">下单结算</el-button>
         </div>
       </div>
     </div>
