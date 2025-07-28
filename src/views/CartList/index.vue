@@ -23,7 +23,7 @@ const singleCheck = (i, selected) => {
   // console.log("单选", i, selected);
   storeSingleCheck(i.skuId, selected);
 };
-// 跳转到结算页面
+// 跳转到结算页面，这里应该是后端有bug，那个锅生成不了订单信息,然后不管怎样结算都是全选
 const toCheckout = () => {
   if (selectedCount.value === 0) {
     ElMessage.warning("请至少选择一件商品");

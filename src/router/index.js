@@ -9,6 +9,7 @@ import SubCategory from '../views/SubCategory/index.vue'
 import Detail from '../views/Detail/index.vue'
 import Checkout from '../views/Checkout/index.vue'
 import CartList from '../views/CartList/index.vue'
+import Pay from '../views/Pay/index.vue'
 
 
 
@@ -43,6 +44,11 @@ const router = createRouter({
         {
           path: 'cart',
           component: CartList
+        },
+        {
+          path: 'pay',
+          // component: () => import('../views/Pay/index.vue') // 懒加载，这里不用这种
+          component: Pay
         }
       ]
     },
